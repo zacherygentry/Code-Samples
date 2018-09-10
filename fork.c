@@ -43,23 +43,13 @@ int main( void )
   }
   else if ( pid == 0 )
   {
-    // When fork() returns 0, we are in the child process.
-    printf("Hello from the child process\n");
-    fflush(NULL);
+    execl("/bin/ls", "ls", NULL);
     exit( EXIT_SUCCESS );
   }
   else 
   {
-    // When fork() returns a positive number, we are in the parent
-    // process and the return value is the PID of the newly created
-    // child process.
     int status;
-
-    // Force the parent process to wait until the child process 
-    // exits
-    waitpid(pid, &status, 0 );
-    printf("Hello from the parent process\n");
-    fflush( NULL );
+    wait(&pid);
   }
   return EXIT_SUCCESS;
 }

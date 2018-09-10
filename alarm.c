@@ -25,40 +25,28 @@
 #include <signal.h>
 #include <string.h>
 
-// Purpose: Set a handler for SIGALRM 
-
-static void handle_alarm (int sig )
-{
-  printf ("Caught alarm %d\n", sig );
-  alarm(1);
+// Purpose: Set a handler for SIGALRM
+static void handle_signal(int sig){
+  printf("Signal is %d\n", sig);
 }
 
-int main (int argc, char *argv[])
+int main(int argc, char *argv[])
 {
   struct sigaction act;
- 
-  /*
-    Zero out the sigaction struct
-  */ 
-  memset (&act, '\0', sizeof(act));
- 
-  /*
-    Set the handler to use the function handle_alarm()
-  */ 
-  act.sa_handler = &handle_alarm;
- 
-  /* 
-    Install the handler and check the return value.
-  */ 
-  if (sigaction(SIGALRM, &act, NULL) < 0) {
-    perror ("sigaction: ");
+  memset(&act, '\0', sizeof(act));
+
+  act.sa_handler = &handle_signal;
+
+  if(sigaction(SIGALRM, &act, NULL) < 0){
     return 1;
   }
- 
+
   alarm(1);
- 
-  while (1)
-    sleep (10);
-  
+
+  while(1)
+  {
+    sleep(1);
+  }
+
   return 0;
 }
